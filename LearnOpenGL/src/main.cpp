@@ -52,7 +52,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("5.1.transform.vs", "5.1.transform.fs");
+    Shader ourShader("resources/shaders/shader.vert", "resources/shaders/shader.frag");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -144,6 +144,8 @@ int main()
     ourShader.use();
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
+    ourShader.setFloat("mixValue", 0.2);
+    glm::mat4 transform = glm::mat4(1.0f);
 
 
     // render loop
@@ -166,14 +168,33 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         // create transformations
-        glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
         transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         // get matrix's uniform location and set matrix
         ourShader.use();
-        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+        
+        ourShader.setFloatMatrix4f("transform", transform);
+        
+
+        // render container
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+
+        // create transformations
+        transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        transform = glm::translate(transform, glm::vec3(-.5f, 0.5f, 0.0f));
+        float size = glm::abs(glm::sin((float)glfwGetTime()));
+        transform = glm::scale(transform,  glm::vec3(size, size, 1.0f));
+
+        // get matrix's uniform location and set matrix
+        ourShader.use();
+
+        ourShader.setFloatMatrix4f("transform", transform);
+
 
         // render container
         glBindVertexArray(VAO);

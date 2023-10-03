@@ -83,6 +83,15 @@
     <ClInclude Include="include\imgui\ImGuiFileBrowser.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\Camer.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mesh.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Model.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\shader.vert" />
